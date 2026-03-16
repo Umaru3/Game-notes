@@ -1,7 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ServerApiVersion } from 'mongodb';
+import { GameService, GameItem } from './services/gameService';
+import { GameController } from './controllers/gameController';
+import { createGameRouter } from './routes/gameRoutes';
+import { AuthService, UserItem } from './services/authService';
+import { authMiddleware } from './middleware/authMiddleware';
+import { AuthController } from './controllers/authController';
+import { createAuthRouter } from './routes/authRoutes';
 
 dotenv.config();
 
@@ -12,44 +19,29 @@ const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/gamecheck
 app.use(cors());
 app.use(express.json());
 
-const client = new MongoClient(mongoUri);
+const client = new MongoClient(mongoUri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 
 async function main() {
   await client.connect();
+  await client.db('admin').command({ ping: 1 });
+  console.log('Pinged your MongoDB deployment successfully.');
   const db = client.db();
-  const games = db.collection('games');
+  const gamesCollection = db.collection<GameItem>('games');
+  const usersCollection = db.collection<UserItem>('users');
 
-  app.get('/api/games', async (req, res) => {
-    const all = await games.find().toArray();
-    res.json(all);
-  });
+  const gameService = new GameService(gamesCollection);
+  const gameController = new GameController(gameService);
+  app.use('/api/games', authMiddleware, createGameRouter(gameController));
 
-  app.post('/api/games', async (req, res) => {
-    const { name } = req.body;
-    if (!name) {
-      return res.status(400).json({ message: 'name is required' });
-    }
-    const doc = await games.insertOne({ name, status: 'new' });
-    res.status(201).json({ ...doc, id: doc.insertedId });
-  });
-
-  app.patch('/api/games/:id', async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-    if (!['new', 'backlog', 'ongoing', 'finished'].includes(status)) {
-      return res.status(400).json({ message: 'invalid status' });
-    }
-    const result = await games.findOneAndUpdate({ _id: new ObjectId(id) }, { $set: { status } }, { returnDocument: 'after' });
-    if (!result.value) return res.status(404).json({ message: 'not found' });
-    res.json(result.value);
-  });
-
-  app.delete('/api/games/:id', async (req, res) => {
-    const { id } = req.params;
-    const result = await games.deleteOne({ _id: new ObjectId(id) });
-    if (result.deletedCount === 0) return res.status(404).json({ message: 'not found' });
-    res.sendStatus(204);
-  });
+  const authService = new AuthService(usersCollection);
+  const authController = new AuthController(authService);
+  app.use('/api/auth', createAuthRouter(authController));
 
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
