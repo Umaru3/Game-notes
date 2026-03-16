@@ -1,14 +1,14 @@
 .App {
   text-align: center;
   min-height: 100vh;
-  background-color: #f4f7fb;
+  background-color: #ffffff;
   color: #1f2937;
 }
 
 .App-header {
-  background-color: #0f172a;
+  background-color: #1f4e32;
   padding: 1.5rem;
-  color: #fff;
+  color: #e8f5e9;
 }
 
 .add-game-form {
@@ -31,9 +31,25 @@
   padding: 0.6rem 0.9rem;
   border-radius: 8px;
   border: none;
-  background: #0284c7;
-  color: #fff;
+  background: #2f8a4f;
+  color: #ffffff;
   cursor: pointer;
+}
+
+.auth-card button {
+  margin-top: 0.45rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  background: #2f8a4f;
+}
+
+.auth-card button:not(:first-child) {
+  background: #1f5b2f;
 }
 
 .status-board {
@@ -90,3 +106,112 @@
 
 .status-column button:nth-of-type(1) { background: #22c55e; color: #fff; }
 .status-column button:nth-of-type(2) { background: #ef4444; color: #fff; }
+
+.auth-wrapper {
+  min-height: calc(100vh - 180px);
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.auth-wrapper::before {
+  content: '';
+  position: absolute;
+  width: min(460px, 94vw);
+  height: min(470px, 86vh);
+  max-width: 480px;
+  max-height: 520px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.auth-panel {
+  position: absolute;
+  top: 50;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(420px, 90vw);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 280ms ease, transform 280ms ease, visibility 280ms ease;
+  transform: translate(-50%, 12px);
+}
+
+.auth-panel.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+.auth-card {
+  padding: 2rem 2.2rem;
+  box-sizing: border-box;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  margin-bottom: 0.8rem;    
+  border-radius: 10px;
+  border: 1px solid #227a4c;
+  box-sizing: border-box;    
+}
+
+.auth-card input::placeholder {
+  color: #d6e7d4;
+}
+
+.auth-card h2 {
+  color: #e1f7d7;
+}
+
+.auth-card h2 {
+  margin-top: 0;
+  color: #0a2e1f;
+  margin-bottom: 1rem;
+}
+
+.auth-card form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.auth-card button {
+  margin-top: 0.45rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #fff;
+  background: #0284c7;
+}
+
+.auth-card button:not(:first-child) {
+  background: #648b89;
+}
+
+.auth-card .error,
+.error {
+  margin-top: 0.8rem;
+  color: #b91c1c;
+  font-size: 0.9rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+}
+
