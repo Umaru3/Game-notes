@@ -1,0 +1,92 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f4f7fb;
+  color: #1f2937;
+}
+
+.App-header {
+  background-color: #0f172a;
+  padding: 1.5rem;
+  color: #fff;
+}
+
+.add-game-form {
+  margin: 1.5rem auto;
+  max-width: 520px;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.add-game-form input {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.add-game-form button {
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  border: none;
+  background: #0284c7;
+  color: #fff;
+  cursor: pointer;
+}
+
+.status-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 0 1rem 2rem;
+}
+
+.status-column {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.9rem;
+  text-align: left;
+}
+
+.status-column h2 {
+  margin-top: 0;
+  text-transform: capitalize;
+  font-size: 1rem;
+  color: #1e3a8a;
+}
+
+.status-column ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.status-column li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.status-column li:last-child {
+  border-bottom: none;
+}
+
+.status-column button {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.45rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-column button:hover {
+  filter: brightness(0.9);
+}
+
+.status-column button:nth-of-type(1) { background: #22c55e; color: #fff; }
+.status-column button:nth-of-type(2) { background: #ef4444; color: #fff; }
